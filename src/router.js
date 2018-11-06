@@ -8,13 +8,17 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/',
+      component: () => import('./views/Main.vue'),
+    },
+    {
       path: '/login',
-      component: resolve => require(['./views/Login.vue'], resolve),
-      hidden: true
+      component: () => import('./views/Login.vue'),
+      name: 'login'
     },
     {
       path: '*',
-      component: resolve => require(['./views/404.vue'], resolve),
+      component: () => import('./views/404.vue'),
       name: '404'
     }
   ]

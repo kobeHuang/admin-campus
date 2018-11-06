@@ -12,11 +12,6 @@
                         <i class="iconfont icon-ai-password"></i>
                         <input type="password" v-model="params.password" class="userpwd-input" placeholder="请输入您的密码">
                     </div>
-                    <div class="input-wrap">
-                        <i class="iconfont icon-securityCode-b"></i>
-                        <input type="text" v-model="params.validateCode"  class="captcha-input" placeholder="请输入验证码">
-                        <img :src="verifyimage" alt="验证码" @click="getVerifyimage">
-                    </div>
                 </form>
                 <button class="login-btn" @click="onLogin">登录</button>
             </div>
@@ -25,7 +20,7 @@
 </template>
 <script>
 import md5 from 'MD5';
-import { config, myAxios } from '../api';
+import { axiosLogin } from '../api';
 
 export default {
   data() {
@@ -34,9 +29,7 @@ export default {
       params: {
         account: '',
         password: '',
-        validateCode: ''
       },
-      verifyimage: config.COMMON.verifyimage
     }
   },
   methods: {
@@ -56,13 +49,6 @@ export default {
         })
         return false;
       }
-      if(!_params.validateCode){
-        this.$message({
-          message: '请输入验证码',
-          type: 'warning'
-        })
-        return false;
-      }
       return true;
     },
     onLogin() {
@@ -70,7 +56,7 @@ export default {
         this.loading = true;
         const _params = Object.assign({}, this.params);
         _params.password = md5(_params.password);
-        myAxios('post', config.COMMON.login, _params)
+        axiosLogin(_params)
         .then( data => {
             this.loading = false;
             window.sessionStorage.setItem('USER_INFO', JSON.stringify(data));
@@ -81,12 +67,8 @@ export default {
             }
         }).catch(e => {
           this.loading = false;
-          this.getVerifyimage();
         });
       }
-    },
-    getVerifyimage() {
-      this.verifyimage = `${config.COMMON.verifyimage}?${Math.random()*10000}`;
     },
     keyupSubmit(evt) {
       evt = (evt) ? evt : ((window.event) ? window.event : "");     
@@ -97,7 +79,6 @@ export default {
     }
   },
   created() {
-    this.getVerifyimage();
     this.keyupSubmit();
     document.addEventListener('keydown',this.keyupSubmit);
   },
@@ -108,8 +89,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 .login {
+  flex: 1;
   position: relative;
-  height: 100%;
   background: url("../assets/images/login_bg.png") center center no-repeat;
   background-size: cover;
   .login-box {
@@ -161,9 +142,6 @@ export default {
             &.userpwd-input {
               border-top: none;
               border-bottom: none;
-            }
-            &.captcha-input {
-              padding-right: 110px;
               border-bottom-left-radius: 8px;
               border-bottom-right-radius: 8px;
             }

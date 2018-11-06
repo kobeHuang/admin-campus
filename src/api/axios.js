@@ -19,7 +19,7 @@ export default (opts) => {
             data: method == 'post' ? params : {}
         }).then(function (response) {
             let _data = response.data;
-            if (_data.result == '1' || _data.status == '1') {
+            if (_data.code == '0') {
                 return resolve(_data);
             } else {
                 Vue.prototype.$message.error({

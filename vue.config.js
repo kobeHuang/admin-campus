@@ -14,6 +14,17 @@ module.exports = {
             }
         }
     },
+    devServer: {
+        port: 8080, // 端口号
+        host: require('my-local-ip')(),
+        open: true, //配置自动启动浏览器
+        proxy: {
+            '/api': {
+                target: 'http://172.16.10.228:3000/',
+                changeOrigin: true
+            }
+        }, // 配置多个代理
+    },
     pwa: {
         // configure the workbox plugin
         workboxPluginMode: 'GenerateSW',
