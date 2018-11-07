@@ -44,21 +44,16 @@ export default {
 </script>
 <style lang='scss' scoped>
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: #ededed;
-  .header-l {
-    flex: 1;
-  }
   .header-r {
     position: relative;
     margin-right: 20px;
+    text-align: right;
     .userinfo-box {
       position: relative;
       width: 200px;
-      height: 40px;
-      line-height: 40px;
+      height: 50px;
+      line-height: 50px;
       font-size: 0;
       background-color: #fff;
       img {

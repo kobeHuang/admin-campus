@@ -8,6 +8,10 @@ import {
     Dropdown,
     DropdownMenu,
     DropdownItem,
+    Menu,
+    Submenu,
+    MenuItem,
+    MenuItemGroup,
     Message,
     Loading
 } from 'element-ui'
@@ -18,6 +22,10 @@ Vue.use(BreadcrumbItem)
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(Menu);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
 Vue.use(Loading)
 
 Vue.prototype.$message = Message

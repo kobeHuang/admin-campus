@@ -9,7 +9,17 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'banner管理',
       component: () => import('./views/Main.vue'),
+      redirect: '/banner-list',
+      icon: 'icon-tupian1',
+      children: [
+        {
+          path: '/banner-list',
+          name: 'banner列表',
+          component: () => import('./views/banner/List.vue')
+        },
+      ]
     },
     {
       path: '/login',

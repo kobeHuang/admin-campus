@@ -1,0 +1,51 @@
+.el-submenu__icon-arrow,
+.el-icon-arrow-down {
+  font-weight: 700;
+  color: #fff !important;
+}
+
+.el-menu-item,
+.el-submenu {
+  width: 230px;
+}
+
+.el-menu-item.isSmall,
+.el-submenu.isSmall,
+.el-menu.isSmall {
+  width: 64px;
+}
+
+.el-menu--horizontal{
+  border-bottom: none;
+}
+
+.el-table__header-wrapper th {
+  font-weight: normal;
+  color: #fff;
+  background-color: #3F5367;
+}
+
+.el-switch__core {
+  border: 1px solid #dcdfe6 !important;
+}
+
+.el-textarea__inner {
+  height: 150px;
+}
+
+.el-select {
+  width: 100%;
+}
+
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 100%;
+}
+
+.el-dropdown {
+  cursor: pointer;
+}
+
+.w-e-toolbar {
+  flex-wrap: wrap;
+}

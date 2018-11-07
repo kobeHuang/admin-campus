@@ -36,7 +36,7 @@ export default {
 <style lang='scss' scoped>
 .container {
   position: relative;
-  height: 100%;
+  flex: 1;
   aside {
     position: absolute;
     top: 0;

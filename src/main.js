@@ -6,6 +6,9 @@ import './plugins/install'
 import './registerServiceWorker'
 
 import './assets/base.scss';
+import './assets/reset.scss';
+import './assets/list.scss';
+
 
 Vue.config.productionTip = false
 
