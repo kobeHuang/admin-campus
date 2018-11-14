@@ -11,3 +11,26 @@ export function axiosLogin({account, password}) {
         }
     })
 }
+
+export function axiosBannerPos() {
+    return axios({
+        url: '/api/admin/bannerPos'
+    })
+}
+
+export function axiosBanners({
+    pos = '',
+    keywords = '',
+    pageNo = 1,
+    pageSize = 10 
+}) {
+    return axios({
+        url: '/api/admin/banner',
+        params: {
+            pos,
+            keywords,
+            pageNo,
+            pageSize
+        }
+    })
+}

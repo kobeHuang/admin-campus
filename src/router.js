@@ -17,7 +17,10 @@ export default new Router({
         {
           path: '/banner-list',
           name: 'banner列表',
-          component: () => import('./views/banner/List.vue')
+          component: () => import('./views/banner/List.vue'),
+          meta: {
+            module: 'BANNER'
+          }
         },
       ]
     },

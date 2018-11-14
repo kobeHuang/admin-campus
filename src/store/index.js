@@ -6,6 +6,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import common from './modules/common';
+import banner from './modules/banner';
 import createLogger from 'vuex/dist/logger';
 
 
@@ -15,7 +16,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
-    common
+    common,
+    banner
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

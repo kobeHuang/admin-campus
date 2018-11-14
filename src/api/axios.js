@@ -22,10 +22,14 @@ export default (opts) => {
             if (_data.code == '0') {
                 return resolve(_data);
             } else {
-                Vue.prototype.$message.error({
-                    message: _data.msg
-                });
-                return reject(_data);
+                if(_data.code == '105'){
+                    location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                }else{
+                    Vue.prototype.$message.error({
+                        message: _data.msg
+                    });
+                    return reject(_data);
+                }
             }
         }).catch(function (error) {
             Vue.prototype.$message.error({

@@ -43,7 +43,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-pagination background layout="prev, pager, next" :total="1" :page-size="20">
+            <el-pagination background layout="prev, pager, next" :total="pageTotal" :current-page="pageCurrent" :page-size="pageSize" @current-change="onPageChange">
             </el-pagination>
         </div>
         <!-- 新增/编辑 -->
@@ -94,14 +94,14 @@ export default {
     data() {
         return {
             searchVal: '',
-            tableData:[
+            /*tableData:[
                 {
                     title: '校园美景',
                     url: 'http://p.qpic.cn/smartcampus/0/25319022635486903/360',
                     pos: '首页',
                     isShow: true
                 }
-            ],
+            ],*/
             editForm: Object.assign({}, _editForm),
             editTitle: '',
             editFormVisible: false,
@@ -123,6 +123,16 @@ export default {
         onEditSubmit() {
             
         }
+    },
+    mounted() {
+        this.$loadingBar.start();
+        this.$store.dispatch('GET_BANNER_TABLELIST',(bol) => {
+            if(bol){
+                this.$loadingBar.finish();
+            }else{
+                this.$loadingBar.error();
+            }
+        });
     }
 }
 </script>
