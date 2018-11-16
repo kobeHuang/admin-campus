@@ -3,9 +3,9 @@
         <!-- 顶部工具条 -->
         <div class="tools-bar">
             <div class="button-list">
-                <el-select placeholder="请选择显示位置">
-                    <el-option label="首页" value="1"></el-option>
-                    <el-option label="师生作品" value="2"></el-option>
+                <el-select v-model="filterVal" placeholder="请选择显示位置">
+                    <el-option label="全部" value=""></el-option>
+                    <el-option v-for="item in filterData" :key="item._id" :label="item.pos" :value="item.pos"></el-option>
                 </el-select>
                 <el-input v-model="searchVal" placeholder="请输入关键字"></el-input>
                 <el-button size="small" class="search-btn" >搜索</el-button>
@@ -48,11 +48,11 @@
         </div>
         <!-- 新增/编辑 -->
         <el-dialog :title="editTitle" :visible.sync="editFormVisible">
-            <el-form :model="editForm" ref="editForm" label-width="100px">
-                <el-form-item label="标题">
+            <el-form :model="editForm" :rules="rules" ref="editForm" label-width="100px">
+                <el-form-item label="标题" prop="title">
                     <el-input v-model="editForm.title" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片">
+                <el-form-item label="图片" prop="url">
                     <el-upload
                     action=""
                     :show-file-list="false"
@@ -61,15 +61,12 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="服务分类">
-                    <el-select v-model="editForm.pos" placeholder="请选择服务分类">
-                        <el-option label="首页" value="首页">
-                        </el-option>
-                        <el-option label="师生作品" value="师生作品">
-                        </el-option>
+                <el-form-item label="显示位置" prop="pos">
+                    <el-select v-model="editForm.pos" placeholder="请选择显示位置">
+                        <el-option v-for="item in filterData" :key="item._id" :label="item.pos" :value="item.pos"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="是否可见">
+                <el-form-item label="是否可见" prop="isShow">
                     <el-switch v-model="editForm.isShow" active-color="#26B99A" inactive-color="#DCDFE6">
                     </el-switch>
                 </el-form-item>
@@ -93,20 +90,24 @@ const _editForm = {
 export default {
     data() {
         return {
+            filterVal: '',
             searchVal: '',
-            /*tableData:[
-                {
-                    title: '校园美景',
-                    url: 'http://p.qpic.cn/smartcampus/0/25319022635486903/360',
-                    pos: '首页',
-                    isShow: true
-                }
-            ],*/
             editForm: Object.assign({}, _editForm),
             editTitle: '',
             editFormVisible: false,
             dialogVisible: false,
-            dialogImageUrl: ''
+            dialogImageUrl: '',
+            rules: {
+                pos: [
+                    { required: true, message: "请选择显示位置", trigger: "change" }
+                ],
+                title: [
+                    { required: true, message: "请输入标题", trigger: "change" }
+                ],
+                url: [
+                    { required: true, message: "请选择图片", trigger: "change" }
+                ]
+            }
         }
     },
     methods: {
@@ -121,18 +122,33 @@ export default {
             });
         },
         onEditSubmit() {
-            
+            const _this = this;
+            this.$refs["editForm"].validate(valid => {
+                if (valid) {
+                let params = Object.assign({}, this.editForm);
+                this.$store.dispatch(`EDIT_BANNER_HANDLER`, {
+                    params: params,
+                    cb: function() {
+                        _this.editFormVisible = false;
+                    }
+                });
+                } else {
+                return false;
+                }
+            });
         }
     },
     mounted() {
         this.$loadingBar.start();
-        this.$store.dispatch('GET_BANNER_TABLELIST',(bol) => {
-            if(bol){
-                this.$loadingBar.finish();
-            }else{
-                this.$loadingBar.error();
-            }
-        });
+        this.$store.dispatch(`GET_BANNER_FILTERS`, () => {
+            this.$store.dispatch('GET_BANNER_TABLELIST',(bol) => {
+                if(bol){
+                    this.$loadingBar.finish();
+                }else{
+                    this.$loadingBar.error();
+                }
+            });
+        })
     }
 }
 </script>

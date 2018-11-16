@@ -61,9 +61,9 @@ export default {
             this.loading = false;
             window.sessionStorage.setItem('USER_INFO', JSON.stringify(data));
             if(this.$route.query.redirect){
-              this.$router.replace({path: decodeURIComponent(this.$route.query.redirect)});
+              location.href = decodeURIComponent(this.$route.query.redirect);
             }else{
-              this.$router.replace({path: '/#/'});
+              this.$router.replace({path: '/'});
             }
         }).catch(e => {
           this.loading = false;

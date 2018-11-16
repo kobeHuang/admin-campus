@@ -20,7 +20,7 @@ export default (opts) => {
         }).then(function (response) {
             let _data = response.data;
             if (_data.code == '0') {
-                return resolve(_data);
+                return resolve(_data.data);
             } else {
                 if(_data.code == '105'){
                     location.href = '/login?redirect=' + encodeURIComponent(location.href);

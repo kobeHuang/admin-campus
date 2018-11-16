@@ -1,4 +1,4 @@
-import { axiosBannerPos, axiosBanners } from '../../api';
+import { axiosBannerPos, axiosBanners, axiosBannerSave } from '../../api';
 
 //列表基础初始化
 const initList = {
@@ -47,18 +47,6 @@ const initList = {
         [`SET_BANNER_PAGECURRENT`](state, count) {
             state[`BANNER_PAGECURRENT`] = count;
         },
-
-        // edit/add table数据
-        [`UPDATE_BANNER_TABLELIST`](state, item) {
-            const record = state[`BANNER_TABLELISTS`].find(list => list.id === item.id);
-            if(record){
-                for(let key in record){
-                    record[key] = item[key];
-                }
-            }/*else{
-                state.addressLists.push(item);
-            }*/
-        }
     },
     actions: {
         /* 
@@ -80,7 +68,7 @@ const initList = {
 
             axiosBanners(_params)
             .then( data => {
-                commit(`SET_BANNER_TABLELIST`, {items: data.deptList});
+                commit(`SET_BANNER_TABLELIST`, {items: data.items});
                 commit(`SET_BANNER_LISTCOUNT`, data.count);
                 cb && cb(true);
             }).catch( e => {
@@ -147,7 +135,7 @@ const initListHandler = {
             initListHandler.editStatus = 'loading';
             setTimeout(() => {
                 commit(`SET_BANNER_EDITSTATUS`, 'loading');
-                myAxios('post', config[moduleName].edit, params)
+                axiosBannerSave(params)
                 .then( data => {
                     cb && cb(data);
                     setTimeout(() => {

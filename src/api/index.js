@@ -34,3 +34,10 @@ export function axiosBanners({
         }
     })
 }
+
+export function axiosBannerSave(params) {
+    return axios({
+        url: '/api/admin/banner/save',
+        params
+    })
+}
