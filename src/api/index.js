@@ -12,6 +12,14 @@ export function axiosLogin({account, password}) {
     })
 }
 
+export function axiosUpload( params ) {
+    return axios({
+        method: 'post',
+        url: '/api/upload',
+        params
+    })
+}
+
 export function axiosBannerPos() {
     return axios({
         url: '/api/admin/bannerPos'

@@ -55,6 +55,7 @@
                 <el-form-item label="图片" prop="url">
                     <el-upload
                     action=""
+                    :on-change="handleUpload"
                     :show-file-list="false"
                    >
                     <img v-if="editForm.url" :src="editForm.url" class="avatar" >
@@ -80,6 +81,7 @@
 </template>
 
 <script>
+import { axiosUpload } from '../../api';
 const _editForm = {
     _id: '',
     title: '',
@@ -136,6 +138,19 @@ export default {
                 return false;
                 }
             });
+        },
+        handleUpload(file, fileList) {
+            const raw = file.raw;
+            if (/image\/(jpeg|png|gif|jpg)/.test(raw.type)) {
+                let formData = new FormData();
+                formData.append('file', raw);
+                axiosUpload(formData).then( data => {
+
+                });
+            }else{
+                this.$message.error("只能上传图片");
+            }
+            console.log(file);
         }
     },
     mounted() {
