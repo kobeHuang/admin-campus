@@ -45,6 +45,7 @@ export function axiosBanners({
 
 export function axiosBannerSave(params) {
     return axios({
+        method: 'post',
         url: '/api/admin/banner/save',
         params
     })

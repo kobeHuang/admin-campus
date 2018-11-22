@@ -48,13 +48,14 @@
         </div>
         <!-- 新增/编辑 -->
         <el-dialog :title="editTitle" :visible.sync="editFormVisible">
-            <el-form :model="editForm" :rules="rules" ref="editForm" label-width="100px">
+            <el-form v-loading="editStatus == 'loading'" :model="editForm" :rules="rules" ref="editForm" label-width="100px">
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="editForm.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="图片" prop="url">
                     <el-upload
                     action=""
+                    :auto-upload="false"
                     :on-change="handleUpload"
                     :show-file-list="false"
                    >
@@ -130,6 +131,7 @@ export default {
                 let params = Object.assign({}, this.editForm);
                 this.$store.dispatch(`EDIT_BANNER_HANDLER`, {
                     params: params,
+                    type: 'list',
                     cb: function() {
                         _this.editFormVisible = false;
                     }
@@ -145,12 +147,11 @@ export default {
                 let formData = new FormData();
                 formData.append('file', raw);
                 axiosUpload(formData).then( data => {
-
+                   this.editForm.url = data; 
                 });
             }else{
                 this.$message.error("只能上传图片");
             }
-            console.log(file);
         }
     },
     mounted() {
