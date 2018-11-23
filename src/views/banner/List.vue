@@ -8,8 +8,8 @@
                     <el-option v-for="item in filterData" :key="item._id" :label="item.pos" :value="item.pos"></el-option>
                 </el-select>
                 <el-input v-model="searchVal" placeholder="请输入关键字"></el-input>
-                <el-button size="small" class="search-btn" >搜索</el-button>
-                <el-button size="small" type="danger" class="add-btn" >新增</el-button>
+                <el-button size="small" class="search-btn" @click.native="handleSearch" >搜索</el-button>
+                <el-button size="small" type="danger" class="add-btn" @click.native="handleAdd" >新增</el-button>
             </div>
         </div>
         <!-- table表格 -->
@@ -36,7 +36,7 @@
                             <el-button  @click="onEdit(scope.row)">
                                 <i class="el-icon-edit"></i>编辑
                             </el-button>
-                            <el-button type="danger">
+                            <el-button type="danger" @click="onDelete(scope.row)">
                                 <i class="el-icon-delete"></i>删除
                             </el-button>
                         </div>
@@ -54,6 +54,7 @@
                 </el-form-item>
                 <el-form-item label="图片" prop="url">
                     <el-upload
+                    class="avatar-uploader"
                     action=""
                     :auto-upload="false"
                     :on-change="handleUpload"
@@ -86,7 +87,7 @@ import { axiosUpload } from '../../api';
 const _editForm = {
     _id: '',
     title: '',
-    url: 'http://p.qpic.cn/smartcampus/0/25319022635486903/360',
+    url: '',
     pos: '',
     isShow: true
 }
@@ -115,6 +116,7 @@ export default {
     },
     methods: {
         onEdit(row) {
+            this.$refs["editForm"] && this.$refs["editForm"].resetFields();
             this.editTitle = "编辑";
             for (let key in this.editForm) {
                 this.editForm[key] = row[key];
@@ -152,6 +154,23 @@ export default {
             }else{
                 this.$message.error("只能上传图片");
             }
+        },
+        handleSearch() {
+            const params = {
+                keywords: this.searchVal,
+                pos: this.filterVal
+            }
+            this.$store.dispatch('SEARCH_BANNER_TABLELIST', {
+                params
+            });
+        },
+        handleAdd() {
+            this.$refs["editForm"] && this.$refs["editForm"].resetFields();
+            this.editTitle = "新增";
+            this.editForm = Object.assign({}, _editForm);
+            this.$nextTick(function() {
+                this.editFormVisible = true;
+            });
         }
     },
     mounted() {
@@ -169,6 +188,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    .el-upload:hover {
+        border-color: #409EFF;
+    }
+}
 .avatar {
     width: 178px;
     height: auto;

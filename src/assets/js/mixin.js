@@ -47,6 +47,7 @@ const mixin = {
     },
     //删除 -- common
     onDelete(row) {
+      console.log(row);
       this.$confirm('是否删除该记录?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -54,7 +55,7 @@ const mixin = {
       }).then(() => {
         this.$store.dispatch(`DEL_${this.moduleName}_HANDLER`, {
           params: {
-            ids: row.id
+            ids: row._id
           },
           type: 'list'
         });

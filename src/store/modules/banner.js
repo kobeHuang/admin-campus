@@ -1,4 +1,9 @@
-import { axiosBannerPos, axiosBanners, axiosBannerSave } from '../../api';
+import { 
+    axiosBannerPos, 
+    axiosBanners, 
+    axiosBannerSave,
+    axiosBannerDel 
+} from '../../api';
 
 //列表基础初始化
 const initList = {
@@ -156,7 +161,8 @@ const initListHandler = {
 
         //  删除
         [`DEL_BANNER_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
-            myAxios('post', config[moduleName].del, params)
+            console.log(JSON.stringify(params));
+            axiosBannerDel(params)
             .then( data => {
                 type == 'list' && (
                     dispatch(`GET_BANNER_TABLELIST`)

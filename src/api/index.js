@@ -50,3 +50,11 @@ export function axiosBannerSave(params) {
         params
     })
 }
+
+export function axiosBannerDel(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/banner/del',
+        params
+    })
+}

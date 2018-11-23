@@ -12,6 +12,7 @@ import {
     Form,
     FormItem,
     Menu,
+    MessageBox,
     Input,
     Submenu,
     Select,
@@ -51,4 +52,5 @@ Vue.use(Pagination);
 Vue.use(Upload);
 
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$loadingBar = LoadingBar
