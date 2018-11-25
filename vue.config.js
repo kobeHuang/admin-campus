@@ -2,6 +2,8 @@
  *  修改 webpack 配置
  */
 
+const path = require('path');
+
 module.exports = {
     baseUrl: './',
     css: {
@@ -20,7 +22,7 @@ module.exports = {
         open: true, //配置自动启动浏览器
         proxy: {
             '/api': {
-                target: 'http://172.16.10.219:3000/',
+                target: `http://${require('my-local-ip')()}:3000/`,
                 changeOrigin: true
             }
         }, // 配置多个代理

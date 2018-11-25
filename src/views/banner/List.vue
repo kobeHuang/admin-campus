@@ -17,7 +17,7 @@
             <el-table :data="tableData" style="margin-top: 10px; border: 1px solid #ebeef5;">
                 <el-table-column prop="title" label="标题" width="300">
                 </el-table-column>
-                <el-table-column label="图标" width="200">
+                <el-table-column label="图片" width="200">
                     <template slot-scope="scope">
                         <img :src="scope.row.url" alt="" style="width: 120px;">
                     </template>
@@ -26,7 +26,12 @@
                 </el-table-column>
                 <el-table-column prop="isShow" label="是否可见" width="100">
                     <template slot-scope="scope">
-                        <el-switch v-model="scope.row.isShow" active-color="#26B99A" inactive-color="#DCDFE6" >
+                        <el-switch 
+                            v-model="scope.row.isShow" 
+                            active-color="#26B99A" 
+                            inactive-color="#DCDFE6"
+                            @change="handleSwitch(scope.row)" 
+                        >
                         </el-switch>
                     </template>
                 </el-table-column>
@@ -170,6 +175,26 @@ export default {
             this.editForm = Object.assign({}, _editForm);
             this.$nextTick(function() {
                 this.editFormVisible = true;
+            });
+        },
+        handleSwitch(row) {
+            const {
+                _id,
+                title,
+                pos,
+                url,
+                isShow
+            } = row;
+
+            this.$store.dispatch(`EDIT_BANNER_HANDLER`, {
+                params:  {
+                    _id,
+                    title,
+                    pos,
+                    url,
+                    isShow
+                },
+                type: 'list'
             });
         }
     },

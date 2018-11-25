@@ -25,6 +25,30 @@ export default new Router({
       ]
     },
     {
+      path: '/info',
+      name: '资讯管理',
+      component: () => import('./views/Main.vue'),
+      icon: 'icon-reyonghushujufenxi',
+      children: [
+        {
+          path: '/info/list',
+          name: '列表管理',
+          component: () => import('./views/info/List.vue'),
+          meta: {
+            module: 'INFOLIST'
+          }
+        },
+        {
+          path: '/info/classify',
+          name: '分类管理',
+          component: () => import('./views/info/Classify.vue'),
+          meta: {
+            module: 'INFOCLASSIFY'
+          }
+        }
+      ]
+    },
+    {
       path: '/login',
       component: () => import('./views/Login.vue'),
       name: 'login'

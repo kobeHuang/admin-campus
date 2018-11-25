@@ -58,3 +58,17 @@ export function axiosBannerDel(params) {
         params
     })
 }
+
+export function axiosInfoClassify() {
+    return axios({
+        url: '/api/admin/infoClassify'
+    })
+}
+
+export function axiosInfoClassifySave(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/infoClassify/save',
+        params
+    })
+}
