@@ -8,6 +8,7 @@ import Vuex from 'vuex';
 import common from './modules/common';
 import banner from './modules/banner';
 import infoClassify from './modules/infoClassify';
+import info from './modules/info';
 import createLogger from 'vuex/dist/logger';
 
 
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
   modules: {
     common,
     banner,
-    infoClassify
+    infoClassify,
+    info
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

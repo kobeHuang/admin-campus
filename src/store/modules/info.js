@@ -1,8 +1,7 @@
 import { 
-    axiosBannerPos, 
-    axiosBanners, 
-    axiosBannerSave,
-    axiosBannerDel 
+    axiosInfos, 
+    axiosInfoSave, 
+    axiosInfoDel
 } from '../../api';
 
 //列表基础初始化
@@ -11,46 +10,46 @@ const initList = {
     state: {
 
         // table数据
-        [`BANNER_TABLELISTS`]: new Array(),
+        [`INFOLIST_TABLELISTS`]: new Array(),
 
         // 数据总数
-        [`BANNER_LISTCOUNT`]: 0,
+        [`INFOLIST_LISTCOUNT`]: 0,
 
         // 数据每页数量
-        [`BANNER_PAGESIZE`]: 10,
+        [`INFOLIST_PAGESIZE`]: 10,
 
         // 数据当前页码
-        [`BANNER_PAGECURRENT`]: 1
+        [`INFOLIST_PAGECURRENT`]: 1
     },
     getters: {
 
         // 获取table数据
-        [`BANNER_TABLELIST`]: state => state[`BANNER_TABLELISTS`],
+        [`INFOLIST_TABLELIST`]: state => state[`INFOLIST_TABLELISTS`],
 
         // 获取数据总数
-        [`BANNER_LISTCOUNT`]: state => state[`BANNER_LISTCOUNT`],
+        [`INFOLIST_LISTCOUNT`]: state => state[`INFOLIST_LISTCOUNT`],
 
         // 获取每页数量
-        [`BANNER_PAGESIZE`]: state => state[`BANNER_PAGESIZE`],
+        [`INFOLIST_PAGESIZE`]: state => state[`INFOLIST_PAGESIZE`],
 
         // 获取当前页码
-        [`BANNER_PAGECURRENT`]: state => state[`BANNER_PAGECURRENT`]
+        [`INFOLIST_PAGECURRENT`]: state => state[`INFOLIST_PAGECURRENT`]
     },
     mutations: {
 
         // 设置table数据
-        [`SET_BANNER_TABLELIST`](state, { items }) {
-            state[`BANNER_TABLELISTS`] = items;
+        [`SET_INFOLIST_TABLELIST`](state, { items }) {
+            state[`INFOLIST_TABLELISTS`] = items;
         },
 
         // 设置数据总数
-        [`SET_BANNER_LISTCOUNT`](state, count) {
-            state[`BANNER_LISTCOUNT`] = count;
+        [`SET_INFOLIST_LISTCOUNT`](state, count) {
+            state[`INFOLIST_LISTCOUNT`] = count;
         },
 
         // 设置当前页码
-        [`SET_BANNER_PAGECURRENT`](state, count) {
-            state[`BANNER_PAGECURRENT`] = count;
+        [`SET_INFOLIST_PAGECURRENT`](state, count) {
+            state[`INFOLIST_PAGECURRENT`] = count;
         },
     },
     actions: {
@@ -59,22 +58,22 @@ const initList = {
          *  页码，size，keyword会被默认传入
          *  cb  为获取数据后的回调函数
          */ 
-        [`GET_BANNER_TABLELIST`]({ dispatch, commit, state }, cb) {
-            commit(`SET_BANNER_TABLELIST`, {items: []});
+        [`GET_INFOLIST_TABLELIST`]({ dispatch, commit, state }, cb) {
+            commit(`SET_INFOLIST_TABLELIST`, {items: []});
 
             let _params = {
                 pageNo: initList.pageno,
-                pageSize: state[`BANNER_PAGESIZE`],
+                pageSize: state[`INFOLIST_PAGESIZE`],
             };
             
             initSearch && (
                 _params = Object.assign({}, _params, initSearch.params)
             );
 
-            axiosBanners(_params)
+            axiosINFOLISTs(_params)
             .then( data => {
-                commit(`SET_BANNER_TABLELIST`, {items: data.items});
-                commit(`SET_BANNER_LISTCOUNT`, data.count);
+                commit(`SET_INFOLIST_TABLELIST`, {items: data.items});
+                commit(`SET_INFOLIST_LISTCOUNT`, data.count);
                 cb && cb(true);
             }).catch( e => {
                 cb && cb(false);
@@ -84,10 +83,10 @@ const initList = {
         /*
          *  页码切换调用
          */
-        [`CHANGE_BANNER_TABLELIST`]({ dispatch, commit, state }, num) {
+        [`CHANGE_INFOLIST_TABLELIST`]({ dispatch, commit, state }, num) {
             initList.pageno = num;
-            commit(`SET_BANNER_PAGECURRENT`, num);
-            dispatch(`GET_BANNER_TABLELIST`);
+            commit(`SET_INFOLIST_PAGECURRENT`, num);
+            dispatch(`GET_INFOLIST_TABLELIST`);
         }
     }
 }
@@ -99,11 +98,11 @@ const initList = {
 const initSearch = {
     params: {},
     actions: {
-        [`SEARCH_BANNER_TABLELIST`]({ dispatch, commit, state }, { params }) {
+        [`SEARCH_INFOLIST_TABLELIST`]({ dispatch, commit, state }, { params }) {
             initSearch.params = params;
             initList.pageno = 1;
-            commit(`SET_BANNER_PAGECURRENT`, 1);
-            dispatch(`GET_BANNER_TABLELIST`);
+            commit(`SET_INFOLIST_PAGECURRENT`, 1);
+            dispatch(`GET_INFOLIST_TABLELIST`);
         }
     }
 }
@@ -118,53 +117,53 @@ const initListHandler = {
     editStatus: 'waitting',
     state: {
         // 编辑加载状态
-        [`BANNER_EDITSTATUS`]: 'waitting',
+        [`INFOLIST_EDITSTATUS`]: 'waitting',
     },
     getters: {
         // 获取编辑加载状态
-        [`BANNER_EDITSTATUS`]: state => state[`BANNER_EDITSTATUS`],
+        [`INFOLIST_EDITSTATUS`]: state => state[`INFOLIST_EDITSTATUS`],
     },
     mutations: {
         // 设置编辑加载状态
-        [`SET_BANNER_EDITSTATUS`](state, status) {
-            state[`BANNER_EDITSTATUS`] = status;
+        [`SET_INFOLIST_EDITSTATUS`](state, status) {
+            state[`INFOLIST_EDITSTATUS`] = status;
         },
     },
     actions: {
         //  新增/修改
-        [`EDIT_BANNER_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
+        [`EDIT_INFOLIST_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
             //避免重复提交
             if(initListHandler.editStatus == 'loading'){
                 return;
             }
             initListHandler.editStatus = 'loading';
             setTimeout(() => {
-                commit(`SET_BANNER_EDITSTATUS`, 'loading');
-                axiosBannerSave(params)
+                commit(`SET_INFOLIST_EDITSTATUS`, 'loading');
+                axiosINFOLISTSave(params)
                 .then( data => {
                     cb && cb(data);
                     setTimeout(() => {
                         initListHandler.editStatus = 'success';
                     }, 400);
-                    commit(`SET_BANNER_EDITSTATUS`, 'success');
+                    commit(`SET_INFOLIST_EDITSTATUS`, 'success');
                     type == 'list' && (
-                        dispatch(`GET_BANNER_TABLELIST`)
+                        dispatch(`GET_INFOLIST_TABLELIST`)
                     );
                 }).catch( e => {
                     setTimeout(() => {
                         initListHandler.editStatus = 'failure';
                     }, 400);
-                    commit(`SET_BANNER_EDITSTATUS`, 'failure');
+                    commit(`SET_INFOLIST_EDITSTATUS`, 'failure');
                 });
             }, 250);
         },
 
         //  删除
-        [`DEL_BANNER_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
-            axiosBannerDel(params)
+        [`DEL_INFOLIST_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
+            axiosINFOLISTDel(params)
             .then( data => {
                 type == 'list' && (
-                    dispatch(`GET_BANNER_TABLELIST`)
+                    dispatch(`GET_INFOLIST_TABLELIST`)
                 );
                 cb && cb();
             })
@@ -177,21 +176,21 @@ const initListHandler = {
  */
 const initFilters = {
     state: {
-        [`BANNER_FILTERS`]: {}
+        [`INFOLIST_FILTERS`]: {}
     },
     getters: {
-        [`BANNER_FILTERS`]: state => state[`BANNER_FILTERS`],
+        [`INFOLIST_FILTERS`]: state => state[`INFOLIST_FILTERS`],
     },
     mutations: {
-        [`SET_BANNER_FILTERS`](state, data) {
-            state[`BANNER_FILTERS`] = data;
+        [`SET_INFOLIST_FILTERS`](state, data) {
+            state[`INFOLIST_FILTERS`] = data;
         }
     },
     actions: {
-        [`GET_BANNER_FILTERS`]({ dispatch, commit, state }, cb) {
-            axiosBannerPos()
+        [`GET_INFOLIST_FILTERS`]({ dispatch, commit, state }, cb) {
+            axiosINFOLISTPos()
             .then( data => {
-                commit(`SET_BANNER_FILTERS`, data)
+                commit(`SET_INFOLIST_FILTERS`, data)
                 cb && cb();
             })
         },

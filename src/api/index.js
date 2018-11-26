@@ -72,3 +72,32 @@ export function axiosInfoClassifySave(params) {
         params
     })
 }
+
+export function axiosInfoClassifyDel(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/infoClassify/del',
+        params
+    })
+}
+
+export function axiosInfos() {
+    return axios({
+        url: '/api/admin/info'
+    })
+}
+
+export function axiosInfoSave(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/info/save',
+        params
+    })
+}
+
+export function axiosInfoDel(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/info/del'
+    })
+}

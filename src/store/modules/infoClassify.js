@@ -1,6 +1,7 @@
 import { 
     axiosInfoClassify, 
-    axiosInfoClassifySave
+    axiosInfoClassifySave,
+    axiosInfoClassifyDel
 } from '../../api';
 
 //列表基础初始化
@@ -90,7 +91,17 @@ const initListHandler = {
                     commit(`SET_INFOCLASSIFY_EDITSTATUS`, 'failure');
                 });
             }, 250);
-        }
+        },
+        //  删除
+        [`DEL_INFOCLASSIFY_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
+            axiosInfoClassifyDel(params)
+            .then( data => {
+                type == 'list' && (
+                    dispatch(`GET_INFOCLASSIFY_TABLELIST`)
+                );
+                cb && cb();
+            })
+        },
     }
 }
 
