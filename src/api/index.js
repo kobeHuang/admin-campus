@@ -81,9 +81,20 @@ export function axiosInfoClassifyDel(params) {
     })
 }
 
-export function axiosInfos() {
+export function axiosInfos({
+    classify = '',
+    keywords = '',
+    pageNo = 1,
+    pageSize = 10 
+}) {
     return axios({
-        url: '/api/admin/info'
+        url: '/api/admin/info',
+        params: {
+            classify,
+            keywords,
+            pageNo,
+            pageSize
+        }
     })
 }
 

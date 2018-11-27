@@ -1,7 +1,8 @@
 import { 
     axiosInfos, 
     axiosInfoSave, 
-    axiosInfoDel
+    axiosInfoDel,
+    axiosInfoClassify
 } from '../../api';
 
 //列表基础初始化
@@ -70,7 +71,7 @@ const initList = {
                 _params = Object.assign({}, _params, initSearch.params)
             );
 
-            axiosINFOLISTs(_params)
+            axiosInfos(_params)
             .then( data => {
                 commit(`SET_INFOLIST_TABLELIST`, {items: data.items});
                 commit(`SET_INFOLIST_LISTCOUNT`, data.count);
@@ -139,7 +140,7 @@ const initListHandler = {
             initListHandler.editStatus = 'loading';
             setTimeout(() => {
                 commit(`SET_INFOLIST_EDITSTATUS`, 'loading');
-                axiosINFOLISTSave(params)
+                axiosInfoSave(params)
                 .then( data => {
                     cb && cb(data);
                     setTimeout(() => {
@@ -160,7 +161,7 @@ const initListHandler = {
 
         //  删除
         [`DEL_INFOLIST_HANDLER`]({ dispatch, commit, state }, { params, type, cb }) {
-            axiosINFOLISTDel(params)
+            axiosInfoDel(params)
             .then( data => {
                 type == 'list' && (
                     dispatch(`GET_INFOLIST_TABLELIST`)
@@ -183,12 +184,12 @@ const initFilters = {
     },
     mutations: {
         [`SET_INFOLIST_FILTERS`](state, data) {
-            state[`INFOLIST_FILTERS`] = data;
+            state[`INFOLIST_FILTERS`] = data.items;
         }
     },
     actions: {
         [`GET_INFOLIST_FILTERS`]({ dispatch, commit, state }, cb) {
-            axiosINFOLISTPos()
+            axiosInfoClassify()
             .then( data => {
                 commit(`SET_INFOLIST_FILTERS`, data)
                 cb && cb();
