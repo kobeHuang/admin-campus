@@ -5,7 +5,7 @@
 const path = require('path');
 
 module.exports = {
-    baseUrl: './',
+    //baseUrl: './',
     css: {
         loaderOptions: {
             sass: {

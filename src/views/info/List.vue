@@ -145,7 +145,6 @@ export default {
             for (let key in this.editForm) {
                 this.editForm[key] = row[key];
             }
-            console.log(this.editForm);
             this.$nextTick(function() {
                 this.editFormVisible = true;
             });
@@ -165,7 +164,7 @@ export default {
         handleSearch() {
             const params = {
                 keywords: this.searchVal,
-                pos: this.filterVal
+                classify: this.filterVal
             }
             this.$store.dispatch('SEARCH_INFOLIST_TABLELIST', {
                 params
@@ -190,7 +189,7 @@ export default {
                 isComment
             } = row;
 
-            this.$store.dispatch(`EDIT_BANNER_HANDLER`, {
+            this.$store.dispatch(`EDIT_INFOLIST_HANDLER`, {
                 params:  {
                     _id,
                     title,

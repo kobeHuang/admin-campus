@@ -49,6 +49,7 @@ export default {
     };
     editor.customConfig.uploadImgShowBase64 = true;
     editor.create();
+    editor.txt.html(this.content);  
   }
 };
 </script>
