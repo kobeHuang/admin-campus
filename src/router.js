@@ -49,6 +49,30 @@ export default new Router({
       ]
     },
     {
+      path: '/life',
+      name: '校园生活管理',
+      component: () => import('./views/Main.vue'),
+      icon: 'icon-xiaoyuan',
+      children: [
+        {
+          path: '/life/list',
+          name: '列表管理',
+          component: () => import('./views/life/List.vue'),
+          meta: {
+            module: 'LIFE'
+          }
+        },
+        {
+          path: '/life/images',
+          name: '图片管理',
+          component: () => import('./views/life/Images.vue'),
+          meta: {
+            module: 'LIFEIMAGE'
+          }
+        }
+      ]
+    },
+    {
       path: '/login',
       component: () => import('./views/Login.vue'),
       name: 'login'

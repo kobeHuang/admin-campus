@@ -9,6 +9,8 @@ import common from './modules/common';
 import banner from './modules/banner';
 import infoClassify from './modules/infoClassify';
 import info from './modules/info';
+import life from './modules/life';
+import lifeImage from './modules/lifeImage';
 import createLogger from 'vuex/dist/logger';
 
 
@@ -21,7 +23,9 @@ const store = new Vuex.Store({
     common,
     banner,
     infoClassify,
-    info
+    info,
+    life,
+    lifeImage
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []
