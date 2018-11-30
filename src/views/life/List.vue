@@ -26,12 +26,26 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-pagination background layout="prev, pager, next" :total="pageTotal" :current-page="pageCurrent" :page-size="pageSize" @current-change="onPageChange">
+            </el-pagination>
         </div>
         <!-- 新增/编辑 -->
-        <el-dialog :title="editTitle" :visible.sync="editFormVisible">
+        <el-dialog :title="editTitle" :visible.sync="editFormVisible" @closed="dialogClosed">
             <el-form v-loading="editStatus == 'loading'" :model="editForm" :rules="rules" ref="editForm" label-width="100px">
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="editForm.title" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片" prop="imgs">
+                    <el-upload
+                        action=""
+                        multiple
+                        :auto-upload="false"
+                        list-type="picture-card"
+                        :file-list="fileList"
+                        :on-change="handleUpload"
+                        :on-remove="handleRemove">
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
                 </el-form-item>
                 <el-form-item label="排序" prop="order">
                     <el-input v-model="editForm.order" auto-complete="off"></el-input>
@@ -49,6 +63,7 @@ import { axiosUpload } from '../../api';
 const _editForm = {
     _id: '',
     title: '',
+    imgs: '',
     order: ''
 }
 export default {
@@ -57,9 +72,13 @@ export default {
             editForm: Object.assign({}, _editForm),
             editTitle: '',
             editFormVisible: false,
+            fileList: [],
             rules: {
                 title: [
                     { required: true, message: "请输入标题", trigger: "change" }
+                ],
+                imgs: [
+                    { required: true, message: "请选择图片", trigger: "change" }
                 ],
                 order: [
                     { required: true, message: "请输入排序", trigger: "change" }
@@ -71,13 +90,46 @@ export default {
         onEdit(row) {
             this.$refs["editForm"] && this.$refs["editForm"].resetFields();
             this.editTitle = "编辑";
+            this.fileList = [];
             for (let key in this.editForm) {
                 this.editForm[key] = row[key];
+            }
+            if(row.imgs !== undefined){
+                const imgs = row.imgs.split(',');
+                this.fileList = imgs.map(img => {
+                    return {
+                        url: img
+                    }
+                });
             }
 
             this.$nextTick(function() {
                 this.editFormVisible = true;
             });
+        },
+        handleUpload(file, fileList) {
+            const raw = file.raw;
+            if (/image\/(jpeg|png|gif|jpg)/.test(raw.type)) {
+                let formData = new FormData();
+                formData.append('file', raw);
+                axiosUpload(formData).then( data => {
+                    let imgArr = this.editForm.imgs === undefined ? [] : this.editForm.imgs.split(',');
+                    imgArr.push(data);
+                    this.fileList = imgArr.map(img => {
+                        return {
+                            url: img
+                        }
+                    });
+                    this.editForm.imgs = imgArr.join(',');
+                });
+            }else{
+                this.$message.error("只能上传图片");
+            }
+        },
+        handleRemove(file, fileList) {
+            const imgArr = this.editForm.imgs.split(',');
+            imgArr.splice(imgArr.indexOf(file.url), 1);
+            this.editForm.imgs = imgArr.join(',');
         },
         handleAdd() {
             this.$refs["editForm"] && this.$refs["editForm"].resetFields();
@@ -85,22 +137,6 @@ export default {
             this.editForm = Object.assign({}, _editForm);
             this.$nextTick(function() {
                 this.editFormVisible = true;
-            });
-        },
-        handleSwitch(row) {
-            const {
-                _id,
-                title,
-                order
-            } = row;
-
-            this.$store.dispatch(`EDIT_LIFE_HANDLER`, {
-                params:  {
-                   _id,
-                    title,
-                    order
-                },
-                type: 'list'
             });
         },
         handleDelete(row) {
@@ -111,7 +147,7 @@ export default {
             }).then(() => {
                 this.$store.dispatch(`DEL_LIFE_HANDLER`, {
                     params: {
-                        title: row.title
+                        title: row._id
                     },
                     type: 'list'
                 });
@@ -133,6 +169,9 @@ export default {
                 return false;
                 }
             });
+        },
+        dialogClosed() {
+            this.fileList = [];
         }
     },
     mounted() {

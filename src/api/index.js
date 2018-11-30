@@ -113,9 +113,16 @@ export function axiosInfoDel(params) {
     })
 }
 
-export function axiosLifes() {
+export function axiosLifes({
+    pageNo = 1,
+    pageSize = 10 
+}) {
     return axios({
-        url: '/api/admin/life'
+        url: '/api/admin/life',
+        params: {
+            pageNo,
+            pageSize
+        }
     })
 }
 
@@ -162,5 +169,20 @@ export function axioslifeImageDel(params) {
     return axios({
         method: 'post',
         url: '/api/admin/lifeImage/del'
+    })
+}
+
+
+export function axiosIntro() {
+    return axios({
+        url: '/api/admin/intro'
+    })
+}
+
+export function axiosIntroSave(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/intor/save',
+        params
     })
 }

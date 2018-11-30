@@ -62,14 +62,30 @@ export default new Router({
             module: 'LIFE'
           }
         },
-        {
+        /*{
           path: '/life/images',
           name: '图片管理',
           component: () => import('./views/life/Images.vue'),
           meta: {
             module: 'LIFEIMAGE'
           }
-        }
+        }*/
+      ]
+    },
+    {
+      path: '/content',
+      name: '内容管理',
+      component: () => import('./views/Main.vue'),
+      icon: 'icon-anjian',
+      children: [
+        {
+          path: '/content/intro',
+          name: '学校简介',
+          component: () => import('./views/content/Intro.vue'),
+          meta: {
+            module: 'INTRO'
+          }
+        },
       ]
     },
     {

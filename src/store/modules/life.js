@@ -10,18 +10,46 @@ const initList = {
     state: {
 
         // table数据
-        [`LIFE_TABLELISTS`]: new Array()
+        [`LIFE_TABLELISTS`]: new Array(),
+
+        // 数据总数
+        [`LIFE_LISTCOUNT`]: 0,
+
+        // 数据每页数量
+        [`LIFE_PAGESIZE`]: 10,
+
+        // 数据当前页码
+        [`LIFE_PAGECURRENT`]: 1
     },
     getters: {
 
         // 获取table数据
-        [`LIFE_TABLELIST`]: state => state[`LIFE_TABLELISTS`]
+        [`LIFE_TABLELIST`]: state => state[`LIFE_TABLELISTS`],
+
+        // 获取数据总数
+        [`LIFE_LISTCOUNT`]: state => state[`LIFE_LISTCOUNT`],
+
+        // 获取每页数量
+        [`LIFE_PAGESIZE`]: state => state[`LIFE_PAGESIZE`],
+
+        // 获取当前页码
+        [`LIFE_PAGECURRENT`]: state => state[`LIFE_PAGECURRENT`]
     },
     mutations: {
 
         // 设置table数据
         [`SET_LIFE_TABLELIST`](state, { items }) {
             state[`LIFE_TABLELISTS`] = items;
+        },
+
+        // 设置数据总数
+        [`SET_LIFE_LISTCOUNT`](state, count) {
+            state[`LIFE_LISTCOUNT`] = count;
+        },
+
+        // 设置当前页码
+        [`SET_LIFE_PAGECURRENT`](state, count) {
+            state[`LIFE_PAGECURRENT`] = count;
         },
     },
     actions: {
@@ -33,13 +61,28 @@ const initList = {
         [`GET_LIFE_TABLELIST`]({ dispatch, commit, state }, cb) {
             commit(`SET_LIFE_TABLELIST`, {items: []});
 
-            axiosLifes()
+            let _params = {
+                pageNo: initList.pageno,
+                pageSize: state[`LIFE_PAGESIZE`],
+            };
+
+            axiosLifes(_params)
             .then( data => {
                 commit(`SET_LIFE_TABLELIST`, {items: data.items});
+                commit(`SET_LIFE_LISTCOUNT`, data.count);
                 cb && cb(true);
             }).catch( e => {
                 cb && cb(false);
             });
+        },
+
+         /*
+         *  页码切换调用
+         */
+        [`CHANGE_LIFE_TABLELIST`]({ dispatch, commit, state }, num) {
+            initList.pageno = num;
+            commit(`SET_LIFE_PAGECURRENT`, num);
+            dispatch(`GET_LIFE_TABLELIST`);
         }
     }
 }
