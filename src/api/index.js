@@ -109,7 +109,8 @@ export function axiosInfoSave(params) {
 export function axiosInfoDel(params) {
     return axios({
         method: 'post',
-        url: '/api/admin/info/del'
+        url: '/api/admin/info/del',
+        params
     })
 }
 
@@ -182,7 +183,30 @@ export function axiosIntro() {
 export function axiosIntroSave(params) {
     return axios({
         method: 'post',
-        url: '/api/admin/intor/save',
+        url: '/api/admin/intro/save',
+        params
+    })
+}
+
+export function axiosMenu(params) {
+    return axios({
+        url: '/api/admin/menu',
+        params
+    })
+}
+
+export function axiosMenuSave(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/menu/save',
+        params
+    })
+}
+
+export function axiosMenuDel(params) {
+    return axios({
+        method: 'post',
+        url: '/api/admin/menu/del',
         params
     })
 }

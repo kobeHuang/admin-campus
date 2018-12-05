@@ -11,6 +11,7 @@ import infoClassify from './modules/infoClassify';
 import info from './modules/info';
 import life from './modules/life';
 import lifeImage from './modules/lifeImage';
+import menu from './modules/menu';
 import createLogger from 'vuex/dist/logger';
 
 
@@ -25,7 +26,8 @@ const store = new Vuex.Store({
     infoClassify,
     info,
     life,
-    lifeImage
+    lifeImage,
+    menu
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

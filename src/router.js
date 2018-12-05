@@ -86,6 +86,14 @@ export default new Router({
             module: 'INTRO'
           }
         },
+        {
+          path: '/content/menu',
+          name: '菜单配置',
+          component: () => import('./views/content/Menu.vue'),
+          meta: {
+            module: 'MENU'
+          }
+        }
       ]
     },
     {
